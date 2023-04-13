@@ -12,13 +12,15 @@ namespace Investment.Account.Controllers
     public class InvestmentAccountFacilityApiController : ControllerBase
     {
         private InvestmentAccountContext _ctx;
-        
+        private readonly ILogger _logger;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="ctx"></param>
-        public InvestmentAccountFacilityApiController(InvestmentAccountContext ctx)
-        { 
+        public InvestmentAccountFacilityApiController(ILogger<InvestmentAccountFacilityApiController> logger, InvestmentAccountContext ctx)
+        {
+            _logger = logger;
             _ctx = ctx;
         }
 
@@ -38,46 +40,34 @@ namespace Investment.Account.Controllers
         [Route("/InvestmentAccount/Initiate")]
         public virtual IActionResult Initiate([FromBody]InitiateInvestmentAccountFacilityRequest body)
         {
-            var account = new Models.InvestmentAccountFacility()
-            {
-                CustomerReference = body.InvestmentAccountFacility.CustomerReference,
-                Date = DateTime.Now.ToString(),
-                DateType = "Account opening",
-                InstrumentPositionHolding = "0",
-                InvestmentAccountType = "Standard Brokerage",
-                ProductInstanceReference = "0"
-            };
+            try { 
+                var account = new Models.InvestmentAccountFacility()
+                {
+                    CustomerReference = body.InvestmentAccountFacility.CustomerReference,
+                    Date = DateTime.Now.ToString(),
+                    DateType = "Account opening",
+                    InstrumentPositionHolding = "0",
+                    InvestmentAccountType = "Standard Brokerage",
+                    ProductInstanceReference = "0"
+                };
+                _ctx.InvestmentAccount.Add(account);
+                _ctx.SaveChanges();
 
-            _ctx.InvestmentAccount.Add(account);
-            _ctx.SaveChanges();
+                InitiateInvestmentAccountFacilityResponse res = new()
+                {
+                    InvestmentAccountFacility = new InitiateInvestmentAccountFacilityResponseInvestmentAccountFacility() { 
+                        InvestmentAccountNumber = account.InvestmentAccountNumber,
+                        InstrumentPositionHolding = "0"
+                    }
+                };
 
-            InitiateInvestmentAccountFacilityResponse res = new()
-            {
-                InvestmentAccountFacility = new InitiateInvestmentAccountFacilityResponseInvestmentAccountFacility() { 
-                    InvestmentAccountNumber = account.InvestmentAccountNumber,
-                    InstrumentPositionHolding = "0"
-                }
-            };
+                return StatusCode(200, res);
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex.Message, ex);
 
-            return StatusCode(200, res);
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 429 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(429, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(500, default(HTTPError));
+            }
+            return StatusCode(404);
         }
 
         /// <summary>
@@ -110,23 +100,6 @@ namespace Investment.Account.Controllers
             };
             return StatusCode(200, res);
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 429 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(429, default(HTTPError));
-
-            //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(500, default(HTTPError));
         }
 
         /// <summary>

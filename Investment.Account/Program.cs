@@ -1,6 +1,7 @@
-using Investment.Account.Repository;
+﻿using Investment.Account.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Investment.Account.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,5 +27,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapInvestmentAccountFacilityEndpoints();
+
+app.MapInvestmentAccountEntryEndpoints();
 
 app.Run();

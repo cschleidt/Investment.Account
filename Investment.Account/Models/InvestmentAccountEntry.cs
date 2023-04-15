@@ -21,7 +21,7 @@ namespace Investment.Account.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DataMember(Name = "InvestmentEntryId")]
-        public string InvestmentEntryId { get; set; }
+        public string? InvestmentEntryId { get; set; }
 
 
 
@@ -30,7 +30,7 @@ namespace Investment.Account.Models
         /// </summary>
         /// <value>The investment account number in any suitable format</value>
         [DataMember(Name = "InvestmentAccountNumber")]
-        public string InvestmentAccountNumber { get; set; }
+        public string? InvestmentAccountNumber { get; set; }
 
         /// <summary>
         /// Reference to the account primary party/owner
@@ -38,7 +38,7 @@ namespace Investment.Account.Models
         /// <value>Reference to the account primary party/owner</value>
 
         [DataMember(Name = "CustomerReference")]
-        public string CustomerReference { get; set; }
+        public string? CustomerReference { get; set; }
 
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Investment.Account.Models
         /// <value>Reference to the type of investment instrument being tracked (e.g. equity, commodity, FX/MM, derivative)</value>
 
         [DataMember(Name = "InstrumentType")]
-        public string InstrumentType { get; set; }
+        public string? InstrumentType { get; set; }
 
         /// <summary>
         /// The specific instrument trading identifier (e.g. NASDAQ Id)
@@ -55,7 +55,7 @@ namespace Investment.Account.Models
         /// <value>The specific instrument trading identifier (e.g. NASDAQ Id)</value>
 
         [DataMember(Name = "InstrumentReference")]
-        public string InstrumentReference { get; set; }
+        public string? InstrumentReference { get; set; }
 
 
         /// <summary>
@@ -74,13 +74,10 @@ namespace Investment.Account.Models
         [DataMember(Name = "PricePrShare")]
         public double PricePrShare { get; set; }
 
-
-
         /// <summary>
         /// Value of the date type
         /// </summary>
         /// <value>Value of the date type</value>
-
         [DataMember(Name = "TradingDate")]
         public DateTime TradingDate { get; set; }
 
